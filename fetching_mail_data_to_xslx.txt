@@ -1,0 +1,14 @@
+function bringEmails() {
+  var ws = SpreadsheetApp.getActiveSpreadsheet();
+  var ss = ws.getSheetByName("Mails");
+  if (!ss) {
+    ss = ws.insertSheet("Mails"); // Create the sheet if it doesn't exist
+  }
+
+  var emails = GmailApp.getInboxThreads(0, 20); // Fetch only the latest 20 emails
+  emails.forEach(email => {
+    var message = email.getMessages();
+    var txtMessage = message[0].getPlainBody();
+    ss.appendRow([txtMessage]);
+  });
+}
